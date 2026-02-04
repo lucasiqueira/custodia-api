@@ -3,6 +3,7 @@ package br.com.siqueira.application.service;
 import java.util.List;
 
 import br.com.siqueira.application.exception.AccountAlreadyExistsException;
+import br.com.siqueira.domain.enums.AccountType;
 import br.com.siqueira.domain.model.Account;
 import br.com.siqueira.infrastructure.persistence.repository.AccountRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -32,5 +33,14 @@ public class AccountService {
         }
 
         return accountRepository.createAccount(account);
+    }
+
+    @Transactional
+    public Account updateAccount(Long id, String name, AccountType type, boolean active) {
+        Account account = accountRepository.getAccountById(id);
+        account.setName(name);
+        account.setType(type);
+        account.setActive(active);
+        return accountRepository.updateAccount(account);
     }
 }

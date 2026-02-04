@@ -9,16 +9,20 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 
 import br.com.siqueira.application.dto.request.CreateAccountRequest;
+import br.com.siqueira.application.dto.request.UpdateAccountRequest;
 import br.com.siqueira.application.dto.response.AccountResponse;
 import br.com.siqueira.application.service.AccountService;
 import br.com.siqueira.domain.model.Account;
 import br.com.siqueira.interfaceadapter.controller.mapper.AccountRequestMapper;
 import br.com.siqueira.interfaceadapter.controller.mapper.AccountResponseMapper;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
@@ -50,14 +54,7 @@ public class AccountController {
     }
 
     @POST
-    @APIResponse(
-        responseCode = "201",
-        description = "Account created successfully",
-        content = @Content(
-            mediaType = MediaType.APPLICATION_JSON,
-            schema = @Schema(implementation = AccountResponse.class)
-        )
-    )
+    @APIResponse(responseCode = "201", description = "Account created successfully", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = AccountResponse.class)))
     @APIResponse(responseCode = "400", description = "Invalid request")
     @APIResponse(responseCode = "409", description = "Account already exists")
     public RestResponse<AccountResponse> createAccount(CreateAccountRequest request) {
@@ -66,5 +63,19 @@ public class AccountController {
         return RestResponse.status(
                 RestResponse.Status.CREATED,
                 AccountResponseMapper.from(accountCreated));
+    }
+
+    @PUT
+    @Path("/{id}")
+    public RestResponse<AccountResponse> updateAccount(
+            @PathParam("id") Long id,
+            @Valid UpdateAccountRequest request) {
+        Account updated = accountService.updateAccount(
+                id,
+                request.name(),
+                request.type(),
+                request.active());
+
+        return RestResponse.ok(AccountResponseMapper.from(updated));
     }
 }

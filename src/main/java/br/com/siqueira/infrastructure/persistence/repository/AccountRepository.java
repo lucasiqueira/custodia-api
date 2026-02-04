@@ -42,4 +42,20 @@ public class AccountRepository
         }
         return AccountMapper.toModel(entity);
     }
+
+    public Account updateAccount(Account account) {
+        AccountEntity entity = findById(account.getId());
+        if (entity == null) {
+            return null;
+        }
+
+        entity.setName(account.getName());
+        entity.setType(account.getType().toString());
+        entity.setActive(account.isActive());
+
+        persist(entity);
+        flush();
+
+        return AccountMapper.toModel(entity);
+    }
 }
