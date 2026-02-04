@@ -28,7 +28,7 @@ services:
     volumes:
       - ./:/workspace:cached
       - ~/.m2:/root/.m2
-    command: ["./mvnw", "-Dquarkus.http.host=0.0.0.0", "quarkus:dev"]
+    command: ["sh", "-c", "./mvnw -DskipTests package && java -Dquarkus.http.host=0.0.0.0 -jar target/quarkus-app/quarkus-run.jar"]
     ports:
       - "8080:8080"
     env_file:
