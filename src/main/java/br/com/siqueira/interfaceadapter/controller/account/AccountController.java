@@ -1,4 +1,4 @@
-package br.com.siqueira.interfaceadapter.controller;
+package br.com.siqueira.interfaceadapter.controller.account;
 
 import java.util.List;
 

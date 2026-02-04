@@ -1,4 +1,4 @@
-package br.com.siqueira.infrastructure.persistance.entity;
+package br.com.siqueira.infrastructure.persistence.entity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

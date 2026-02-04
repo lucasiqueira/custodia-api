@@ -1,8 +1,8 @@
-package br.com.siqueira.infrastructure.persistance.mapper;
+package br.com.siqueira.infrastructure.persistence.mapper;
 
 import br.com.siqueira.domain.enums.AccountType;
 import br.com.siqueira.domain.model.Account;
-import br.com.siqueira.infrastructure.persistance.entity.AccountEntity;
+import br.com.siqueira.infrastructure.persistence.entity.AccountEntity;
 
 public final class AccountMapper {
 
