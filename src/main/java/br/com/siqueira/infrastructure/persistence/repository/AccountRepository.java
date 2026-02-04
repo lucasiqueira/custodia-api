@@ -1,10 +1,8 @@
 package br.com.siqueira.infrastructure.persistence.repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import br.com.siqueira.domain.enums.AccountType;
 import br.com.siqueira.domain.model.Account;
 import br.com.siqueira.infrastructure.persistence.entity.AccountEntity;
 import br.com.siqueira.infrastructure.persistence.mapper.AccountMapper;
@@ -22,14 +20,15 @@ public class AccountRepository
                 .toList();
     }
 
-    public Account createAccount(String name, AccountType type) {
-        AccountEntity entity = new AccountEntity();
-        entity.setId(UUID.randomUUID());
-        entity.setName(name);
-        entity.setType(type.name());
-        entity.setActive(true);
-        entity.setCreatedAt(LocalDateTime.now());
-        entity.setUpdatedAt(LocalDateTime.now());
+    public List<Account> findByName(String name) {
+        return find("name", name)
+                .stream()
+                .map(AccountMapper::toModel)
+                .toList();
+    }
+
+    public Account createAccount(Account account) {
+        AccountEntity entity = AccountMapper.toEntity(account);
 
         persist(entity);
         flush();

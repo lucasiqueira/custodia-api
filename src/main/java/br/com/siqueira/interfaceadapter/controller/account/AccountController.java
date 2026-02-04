@@ -12,6 +12,7 @@ import br.com.siqueira.application.dto.request.CreateAccountRequest;
 import br.com.siqueira.application.dto.response.AccountResponse;
 import br.com.siqueira.application.service.AccountService;
 import br.com.siqueira.domain.model.Account;
+import br.com.siqueira.interfaceadapter.controller.mapper.AccountRequestMapper;
 import br.com.siqueira.interfaceadapter.controller.mapper.AccountResponseMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.Consumes;
@@ -35,15 +36,13 @@ public class AccountController {
     }
 
     @GET
-    @Path("")
-    public List<AccountResponse> getAllAccounts() {
-        return accountService.getAllAccounts().stream()
+    public RestResponse<List<AccountResponse>> getAllAccounts() {
+        return RestResponse.ok(accountService.getAllAccounts().stream()
                 .map(AccountResponseMapper::from)
-                .toList();
+                .toList());
     }
 
     @POST
-    @Path("")
     @APIResponse(
         responseCode = "201",
         description = "Account created successfully",
@@ -52,8 +51,10 @@ public class AccountController {
             schema = @Schema(implementation = AccountResponse.class)
         )
     )
+    @APIResponse(responseCode = "400", description = "Invalid request")
     public RestResponse<AccountResponse> createAccount(CreateAccountRequest request) {
-        Account accountCreated = accountService.createAccount(request.name, request.type);
+        Account account = AccountRequestMapper.toNewAccount(request);
+        Account accountCreated = accountService.createAccount(account);
         return RestResponse.status(
                 RestResponse.Status.CREATED,
                 AccountResponseMapper.from(accountCreated));
