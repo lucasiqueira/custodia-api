@@ -7,7 +7,7 @@
 -- TABLE: accounts
 -- =========================
 CREATE TABLE accounts (
-  id UUID PRIMARY KEY,
+  id BIGSERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   type VARCHAR(30) NOT NULL,
   active BOOLEAN NOT NULL DEFAULT TRUE,
@@ -19,7 +19,7 @@ CREATE TABLE accounts (
 -- TABLE: categories
 -- =========================
 CREATE TABLE categories (
-  id UUID PRIMARY KEY,
+  id BIGINT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   description VARCHAR(255),
   active BOOLEAN NOT NULL DEFAULT TRUE,
@@ -40,24 +40,17 @@ CREATE TABLE budget_config (
 -- TABLE: transactions
 -- =========================
 CREATE TABLE transactions (
-  id UUID PRIMARY KEY,
-
+  id BIGINT PRIMARY KEY,
   transaction_date DATE NOT NULL,
   accounting_date DATE NOT NULL,
-
   description VARCHAR(255) NOT NULL,
-
   amount BIGINT NOT NULL,
-
   nature VARCHAR(20) NOT NULL,
   expense_type VARCHAR(20),
   budget VARCHAR(30),
-
   notes VARCHAR(500),
-
-  account_id UUID NOT NULL,
-  category_id UUID NOT NULL,
-
+  account_id BIGINT NOT NULL,
+  category_id BIGINT NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
 

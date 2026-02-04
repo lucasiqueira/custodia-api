@@ -1,11 +1,10 @@
 package br.com.siqueira.interfaceadapter.controller.account;
 
 import java.util.List;
-import java.util.UUID;
 
-import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 
@@ -46,8 +45,7 @@ public class AccountController {
     @GET
     @Path("{id}")
     public RestResponse<AccountResponse> getAccountById(String id) {
-        UUID uuid = UUID.fromString(id);
-        Account account = accountService.getAccountById(uuid);
+        Account account = accountService.getAccountById(Long.parseLong(id));
         return RestResponse.ok(AccountResponseMapper.from(account));
     }
 
@@ -61,6 +59,7 @@ public class AccountController {
         )
     )
     @APIResponse(responseCode = "400", description = "Invalid request")
+    @APIResponse(responseCode = "409", description = "Account already exists")
     public RestResponse<AccountResponse> createAccount(CreateAccountRequest request) {
         Account account = AccountRequestMapper.toNewAccount(request);
         Account accountCreated = accountService.createAccount(account);

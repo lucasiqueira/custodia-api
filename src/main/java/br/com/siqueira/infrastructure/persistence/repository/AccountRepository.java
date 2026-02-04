@@ -1,7 +1,6 @@
 package br.com.siqueira.infrastructure.persistence.repository;
 
 import java.util.List;
-import java.util.UUID;
 
 import br.com.siqueira.domain.model.Account;
 import br.com.siqueira.infrastructure.persistence.entity.AccountEntity;
@@ -11,7 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class AccountRepository
-        implements PanacheRepositoryBase<AccountEntity, UUID> {
+        implements PanacheRepositoryBase<AccountEntity, Long> {
 
     public List<Account> getAccounts() {
         return findAll()
@@ -36,7 +35,7 @@ public class AccountRepository
         return AccountMapper.toModel(entity);
     }
 
-    public Account getAccountById(UUID id) {
+    public Account getAccountById(Long id) {
         AccountEntity entity = find("id", id).firstResult();
         if (entity == null) {
             return null;

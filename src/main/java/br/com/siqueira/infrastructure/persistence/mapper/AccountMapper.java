@@ -6,33 +6,28 @@ import br.com.siqueira.infrastructure.persistence.entity.AccountEntity;
 
 public final class AccountMapper {
 
-    private AccountMapper() {}
+    private AccountMapper() {
+    }
 
     public static Account toModel(AccountEntity entity) {
-        if (entity == null) return null;
-
-        return new Account(
-            entity.getId(),
-            entity.getName(),
-            AccountType.fromString(entity.getType()),
-            entity.isActive(),
-            entity.getCreatedAt(),
-            entity.getUpdatedAt()
-        );
+        return Account.rehydrate(
+                entity.getId(),
+                entity.getName(),
+                AccountType.valueOf(entity.getType()),
+                entity.isActive(),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt());
     }
 
     public static AccountEntity toEntity(Account model) {
-        if (model == null) return null;
+        if (model == null)
+            return null;
 
         AccountEntity entity = new AccountEntity();
-        entity.setId(model.getId());
         entity.setName(model.getName());
         entity.setType(model.getType().name());
         entity.setActive(model.isActive());
-        entity.setCreatedAt(model.getCreatedAt());
-        entity.setUpdatedAt(model.getUpdatedAt());
 
         return entity;
     }
 }
-

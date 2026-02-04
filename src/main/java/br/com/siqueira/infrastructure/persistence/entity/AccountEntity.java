@@ -1,13 +1,17 @@
 package br.com.siqueira.infrastructure.persistence.entity;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +21,9 @@ import lombok.Setter;
 @Setter
 public class AccountEntity extends PanacheEntityBase {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private UUID id;
+    private Long id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -29,9 +34,11 @@ public class AccountEntity extends PanacheEntityBase {
     @Column(name = "active", nullable = false)
     private boolean active;
 
+    @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 }

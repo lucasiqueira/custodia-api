@@ -7,7 +7,7 @@ public class AccountResponseMapper {
 
     public static AccountResponse from(Account model) {
         return new AccountResponse(
-                model.getId().toString(),
+                model.getId(),
                 model.getName(),
                 model.getType().getDisplayName(),
                 model.isActive(),
