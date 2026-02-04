@@ -22,15 +22,18 @@ services:
       - "/Users/lucasiqueira/Library/CloudStorage/OneDrive-Pessoal/Documentos/Financeiro/03_Controle Pessoal/Custódia/Database:/var/lib/postgresql/data"
 
   custodia-api:
-    image: maven:3.9.9-eclipse-temurin-21
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: custodia-api:latest
+    ports:
+      - "8080:8080"
     container_name: custodia-api
     working_dir: /workspace
     volumes:
       - ./:/workspace:cached
       - ~/.m2:/root/.m2
     command: ["sh", "-c", "./mvnw -DskipTests package && java -Dquarkus.http.host=0.0.0.0 -jar target/quarkus-app/quarkus-run.jar"]
-    ports:
-      - "8080:8080"
     env_file:
       - .env
     environment:
