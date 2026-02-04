@@ -1,6 +1,7 @@
 package br.com.siqueira.application.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import br.com.siqueira.domain.model.Account;
 import br.com.siqueira.infrastructure.persistence.repository.AccountRepository;
@@ -17,6 +18,10 @@ public class AccountService {
 
     public List<Account> getAllAccounts() {
         return accountRepository.getAccounts();
+    }
+
+    public Account getAccountById(UUID id) {
+        return accountRepository.getAccountById(id);
     }
 
     @Transactional

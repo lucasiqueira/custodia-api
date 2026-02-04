@@ -1,6 +1,7 @@
 package br.com.siqueira.interfaceadapter.controller.account;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
@@ -40,6 +41,14 @@ public class AccountController {
         return RestResponse.ok(accountService.getAllAccounts().stream()
                 .map(AccountResponseMapper::from)
                 .toList());
+    }
+
+    @GET
+    @Path("{id}")
+    public RestResponse<AccountResponse> getAccountById(String id) {
+        UUID uuid = UUID.fromString(id);
+        Account account = accountService.getAccountById(uuid);
+        return RestResponse.ok(AccountResponseMapper.from(account));
     }
 
     @POST

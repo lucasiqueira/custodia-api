@@ -35,4 +35,12 @@ public class AccountRepository
 
         return AccountMapper.toModel(entity);
     }
+
+    public Account getAccountById(UUID id) {
+        AccountEntity entity = find("id", id).firstResult();
+        if (entity == null) {
+            return null;
+        }
+        return AccountMapper.toModel(entity);
+    }
 }
