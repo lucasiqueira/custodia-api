@@ -2,11 +2,11 @@ package br.com.siqueira.interfaceadapter.controller.exception;
 
 import br.com.siqueira.application.exception.*;
 import br.com.siqueira.domain.exception.*;
+import jakarta.json.bind.JsonbException;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
 import jakarta.ws.rs.ext.ExceptionMapper;
-
 
 @Provider
 public class GlobalExceptionMapper
@@ -20,8 +20,7 @@ public class GlobalExceptionMapper
         return Response.status(errorType.status())
                 .entity(new ErrorResponse(
                         errorType.code(),
-                        exception.getMessage()
-                ))
+                        exception.getMessage()))
                 .build();
     }
 
@@ -47,8 +46,10 @@ public class GlobalExceptionMapper
             return ErrorType.VALIDATION_ERROR;
         }
 
-        // fallback seguro
+        if (ex instanceof JsonbException) {
+            return ErrorType.VALIDATION_ERROR;
+        }
+
         return ErrorType.INTERNAL_ERROR;
     }
 }
-
