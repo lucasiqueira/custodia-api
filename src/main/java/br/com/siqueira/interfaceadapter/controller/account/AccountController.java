@@ -19,6 +19,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -77,5 +78,25 @@ public class AccountController {
                 request.active());
 
         return RestResponse.ok(AccountResponseMapper.from(updated));
+    }
+
+    @PATCH
+    @Path("/{id}/deactivate")
+    @APIResponse(responseCode = "200", description = "Account deactivated successfully", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = AccountResponse.class)))
+    @APIResponse(responseCode = "404", description = "Account not found")
+    @APIResponse(responseCode = "409", description = "Account cannot be deactivated")
+    public RestResponse<AccountResponse> deactivate(@PathParam("id") Long id) {
+        Account account = accountService.deactivate(id);
+        return RestResponse.ok(AccountResponseMapper.from(account));
+    }
+
+    @PATCH
+    @Path("/{id}/activate")
+    @APIResponse(responseCode = "200", description = "Account activated successfully", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(implementation = AccountResponse.class)))
+    @APIResponse(responseCode = "404", description = "Account not found")
+    @APIResponse(responseCode = "409", description = "Account cannot be activated")
+    public RestResponse<AccountResponse> activate(@PathParam("id") Long id) {
+        Account account = accountService.activate(id);
+        return RestResponse.ok(AccountResponseMapper.from(account));
     }
 }

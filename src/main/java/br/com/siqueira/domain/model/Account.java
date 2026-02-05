@@ -3,6 +3,8 @@ package br.com.siqueira.domain.model;
 import java.time.LocalDateTime;
 
 import br.com.siqueira.domain.enums.AccountType;
+import br.com.siqueira.domain.exception.AccountAlreadyActiveException;
+import br.com.siqueira.domain.exception.AccountAlreadyInactiveException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -47,5 +49,19 @@ public class Account {
         return new Account(
                 id, name, type, active, createdAt, updatedAt
         );
+    }
+
+        public void deactivate() {
+        if (!this.active) {
+            throw new AccountAlreadyInactiveException();
+        }
+        this.active = false;
+    }
+
+    public void activate() {
+        if (this.active) {
+            throw new AccountAlreadyActiveException();
+        }
+        this.active = true;
     }
 }

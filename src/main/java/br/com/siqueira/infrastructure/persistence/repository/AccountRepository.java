@@ -2,6 +2,7 @@ package br.com.siqueira.infrastructure.persistence.repository;
 
 import java.util.List;
 
+import br.com.siqueira.application.exception.AccountNotFoundException;
 import br.com.siqueira.domain.model.Account;
 import br.com.siqueira.infrastructure.persistence.entity.AccountEntity;
 import br.com.siqueira.infrastructure.persistence.mapper.AccountMapper;
@@ -36,9 +37,9 @@ public class AccountRepository
     }
 
     public Account getAccountById(Long id) {
-        AccountEntity entity = find("id", id).firstResult();
+        AccountEntity entity = findById(id);
         if (entity == null) {
-            return null;
+            throw new AccountNotFoundException(id);
         }
         return AccountMapper.toModel(entity);
     }
@@ -57,5 +58,17 @@ public class AccountRepository
         flush();
 
         return AccountMapper.toModel(entity);
+    }
+
+    public void save(Account account) {
+        AccountEntity entity = findById(account.getId());
+        if (entity == null) {
+            throw new AccountNotFoundException(account.getId());
+        }
+
+        entity.setActive(account.isActive());
+
+        persist(entity);
+        flush();
     }
 }

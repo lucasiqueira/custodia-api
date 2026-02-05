@@ -43,4 +43,20 @@ public class AccountService {
         account.setActive(active);
         return accountRepository.updateAccount(account);
     }
+
+    @Transactional
+    public Account deactivate(Long id) {
+        Account account = accountRepository.getAccountById(id);
+        account.deactivate();
+        accountRepository.save(account);
+        return account;
+    }
+
+    @Transactional
+    public Account activate(Long id) {
+        Account account = accountRepository.getAccountById(id);
+        account.activate();
+        accountRepository.save(account);
+        return account;
+    }
 }
