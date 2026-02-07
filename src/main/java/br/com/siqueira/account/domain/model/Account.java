@@ -31,11 +31,6 @@ public class Account {
         this.updatedAt = updatedAt;
     }
 
-    public Account(String name, AccountType type) {
-        this.name = name;
-        this.type = type;
-    }
-
     public static Account createNew(String name, AccountType type) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Account name is required");
@@ -62,6 +57,9 @@ public class Account {
     }
 
     public void update(String name, AccountType type) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Account name is required");
+        }
         this.name = name;
         this.type = type;
     }
@@ -71,7 +69,6 @@ public class Account {
             throw new AccountAlreadyInactiveException();
         }
         this.active = false;
-        this.markUpdated();
     }
 
     public void activate() {
@@ -79,10 +76,5 @@ public class Account {
             throw new AccountAlreadyActiveException();
         }
         this.active = true;
-        this.markUpdated();
     }
-
-    private void markUpdated() {
-    this.updatedAt = LocalDateTime.now();
-}
 }

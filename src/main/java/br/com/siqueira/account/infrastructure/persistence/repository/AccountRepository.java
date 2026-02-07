@@ -34,6 +34,7 @@ public class AccountRepository
         if (account.getId() == null) {
             AccountEntity entity = AccountMapper.toEntity(account);
             persist(entity);
+            flush();
             return AccountMapper.toModel(entity);
         }
 
@@ -45,13 +46,13 @@ public class AccountRepository
         entity.setName(account.getName());
         entity.setType(account.getType().name());
         entity.setActive(account.isActive());
-        entity.setUpdatedAt(account.getUpdatedAt());
 
+        flush();
         return AccountMapper.toModel(entity);
     }
 
     public boolean existsByNameAndType(String name, AccountType type) {
-        return find("name = ?1 and type = ?2", name, type.toString()).count() > 0;
+        return find("name = ?1 and type = ?2", name, type.name()).count() > 0;
     }
 
 }

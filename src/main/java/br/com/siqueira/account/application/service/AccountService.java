@@ -45,16 +45,14 @@ public class AccountService {
     public Account deactivate(Long id) {
         Account account = this.load(id);
         account.deactivate();
-        accountRepository.save(account);
-        return account;
+        return accountRepository.save(account);
     }
 
     @Transactional
     public Account activate(Long id) {
         Account account = this.load(id);
         account.activate();
-        accountRepository.save(account);
-        return account;
+        return accountRepository.save(account);
     }
 
     private Account load(Long id) {
