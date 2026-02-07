@@ -3,6 +3,7 @@ package br.com.siqueira.account.infrastructure.persistence.repository;
 import java.util.List;
 
 import br.com.siqueira.account.application.exception.AccountNotFoundException;
+import br.com.siqueira.account.domain.enums.AccountType;
 import br.com.siqueira.account.domain.model.Account;
 import br.com.siqueira.account.infrastructure.persistence.entity.AccountEntity;
 import br.com.siqueira.account.infrastructure.persistence.mapper.AccountMapper;
@@ -20,22 +21,6 @@ public class AccountRepository
                 .toList();
     }
 
-    public List<Account> findByName(String name) {
-        return find("name", name)
-                .stream()
-                .map(AccountMapper::toModel)
-                .toList();
-    }
-
-    public Account createAccount(Account account) {
-        AccountEntity entity = AccountMapper.toEntity(account);
-
-        persist(entity);
-        flush();
-
-        return AccountMapper.toModel(entity);
-    }
-
     public Account getAccountById(Long id) {
         AccountEntity entity = findById(id);
         if (entity == null) {
@@ -44,31 +29,29 @@ public class AccountRepository
         return AccountMapper.toModel(entity);
     }
 
-    public Account updateAccount(Account account) {
-        AccountEntity entity = findById(account.getId());
-        if (entity == null) {
-            return null;
+    public Account save(Account account) {
+
+        if (account.getId() == null) {
+            AccountEntity entity = AccountMapper.toEntity(account);
+            persist(entity);
+            return AccountMapper.toModel(entity);
         }
 
-        entity.setName(account.getName());
-        entity.setType(account.getType().toString());
-        entity.setActive(account.isActive());
-
-        persist(entity);
-        flush();
-
-        return AccountMapper.toModel(entity);
-    }
-
-    public void save(Account account) {
         AccountEntity entity = findById(account.getId());
         if (entity == null) {
             throw new AccountNotFoundException(account.getId());
         }
 
+        entity.setName(account.getName());
+        entity.setType(account.getType().name());
         entity.setActive(account.isActive());
+        entity.setUpdatedAt(account.getUpdatedAt());
 
-        persist(entity);
-        flush();
+        return AccountMapper.toModel(entity);
     }
+
+    public boolean existsByNameAndType(String name, AccountType type) {
+        return find("name = ?1 and type = ?2", name, type.toString()).count() > 0;
+    }
+
 }

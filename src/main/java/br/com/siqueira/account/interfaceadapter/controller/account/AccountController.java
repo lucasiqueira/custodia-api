@@ -74,8 +74,7 @@ public class AccountController {
         Account updated = accountService.updateAccount(
                 id,
                 request.name(),
-                request.type(),
-                request.active());
+                request.type());
 
         return RestResponse.ok(AccountResponseMapper.from(updated));
     }

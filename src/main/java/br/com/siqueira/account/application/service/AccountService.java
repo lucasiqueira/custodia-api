@@ -22,31 +22,28 @@ public class AccountService {
     }
 
     public Account getAccountById(Long id) {
-        return accountRepository.getAccountById(id);
+        return this.load(id);
     }
 
     @Transactional
     public Account createAccount(Account account) {
-        List<Account> existingAccounts = accountRepository.findByName(account.getName());
-        if (!existingAccounts.isEmpty() && existingAccounts.stream().anyMatch(a -> a.getType().equals(account.getType()))) {
+        if (accountRepository.existsByNameAndType(account.getName(), account.getType())) {
             throw new AccountAlreadyExistsException(account.getName(), account.getType());
         }
 
-        return accountRepository.createAccount(account);
+        return accountRepository.save(account);
     }
 
     @Transactional
-    public Account updateAccount(Long id, String name, AccountType type, boolean active) {
-        Account account = accountRepository.getAccountById(id);
-        account.setName(name);
-        account.setType(type);
-        account.setActive(active);
-        return accountRepository.updateAccount(account);
+    public Account updateAccount(Long id, String name, AccountType type) {
+        Account account = this.load(id);
+        account.update(name, type);
+        return accountRepository.save(account);
     }
 
     @Transactional
     public Account deactivate(Long id) {
-        Account account = accountRepository.getAccountById(id);
+        Account account = this.load(id);
         account.deactivate();
         accountRepository.save(account);
         return account;
@@ -54,9 +51,14 @@ public class AccountService {
 
     @Transactional
     public Account activate(Long id) {
-        Account account = accountRepository.getAccountById(id);
+        Account account = this.load(id);
         account.activate();
         accountRepository.save(account);
         return account;
     }
+
+    private Account load(Long id) {
+        return accountRepository.getAccountById(id);
+    }
+
 }

@@ -5,15 +5,9 @@ import java.time.LocalDateTime;
 import br.com.siqueira.account.domain.enums.AccountType;
 import br.com.siqueira.account.domain.exception.AccountAlreadyActiveException;
 import br.com.siqueira.account.domain.exception.AccountAlreadyInactiveException;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
-@AllArgsConstructor
-@Data
 public class Account {
     private Long id;
     private String name;
@@ -22,12 +16,30 @@ public class Account {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    private Account(
+            Long id,
+            String name,
+            AccountType type,
+            boolean active,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.active = active;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public Account(String name, AccountType type) {
         this.name = name;
         this.type = type;
     }
 
     public static Account createNew(String name, AccountType type) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Account name is required");
+        }
 
         return new Account(
                 null,
@@ -44,18 +56,22 @@ public class Account {
             AccountType type,
             boolean active,
             LocalDateTime createdAt,
-            LocalDateTime updatedAt
-    ) {
+            LocalDateTime updatedAt) {
         return new Account(
-                id, name, type, active, createdAt, updatedAt
-        );
+                id, name, type, active, createdAt, updatedAt);
     }
 
-        public void deactivate() {
+    public void update(String name, AccountType type) {
+        this.name = name;
+        this.type = type;
+    }
+
+    public void deactivate() {
         if (!this.active) {
             throw new AccountAlreadyInactiveException();
         }
         this.active = false;
+        this.markUpdated();
     }
 
     public void activate() {
@@ -63,5 +79,10 @@ public class Account {
             throw new AccountAlreadyActiveException();
         }
         this.active = true;
+        this.markUpdated();
     }
+
+    private void markUpdated() {
+    this.updatedAt = LocalDateTime.now();
+}
 }
