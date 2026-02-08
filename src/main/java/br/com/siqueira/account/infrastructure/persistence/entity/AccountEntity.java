@@ -28,7 +28,7 @@ public class AccountEntity extends PanacheEntityBase {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false, length = 30)
     private String type;
 
     @Column(name = "active", nullable = false)
