@@ -2,10 +2,11 @@ package br.com.siqueira.account.application.service;
 
 import java.util.List;
 
-import br.com.siqueira.account.application.exception.AccountAlreadyExistsException;
 import br.com.siqueira.account.domain.enums.AccountType;
 import br.com.siqueira.account.domain.model.Account;
 import br.com.siqueira.account.infrastructure.persistence.repository.AccountRepository;
+import br.com.siqueira.shared.api.error.BusinessException;
+import br.com.siqueira.shared.api.error.ErrorType;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -28,7 +29,8 @@ public class AccountService {
     @Transactional
     public Account createAccount(Account account) {
         if (accountRepository.existsByNameAndType(account.getName(), account.getType())) {
-            throw new AccountAlreadyExistsException(account.getName(), account.getType());
+            String message = "Account with name '" + account.getName() + "' and type '" + account.getType().getType() + "' already exists";
+            throw new BusinessException(ErrorType.ACCOUNT_ALREADY_EXISTS, message);
         }
 
         return accountRepository.save(account);

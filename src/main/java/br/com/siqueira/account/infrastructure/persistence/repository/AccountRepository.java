@@ -2,11 +2,12 @@ package br.com.siqueira.account.infrastructure.persistence.repository;
 
 import java.util.List;
 
-import br.com.siqueira.account.application.exception.AccountNotFoundException;
 import br.com.siqueira.account.domain.enums.AccountType;
 import br.com.siqueira.account.domain.model.Account;
 import br.com.siqueira.account.infrastructure.persistence.entity.AccountEntity;
 import br.com.siqueira.account.infrastructure.persistence.mapper.AccountMapper;
+import br.com.siqueira.shared.api.error.BusinessException;
+import br.com.siqueira.shared.api.error.ErrorType;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -24,7 +25,7 @@ public class AccountRepository
     public Account getAccountById(Long id) {
         AccountEntity entity = findById(id);
         if (entity == null) {
-            throw new AccountNotFoundException(id);
+            throw new BusinessException(ErrorType.ACCOUNT_NOT_FOUND);
         }
         return AccountMapper.toModel(entity);
     }
@@ -40,7 +41,7 @@ public class AccountRepository
 
         AccountEntity entity = findById(account.getId());
         if (entity == null) {
-            throw new AccountNotFoundException(account.getId());
+            throw new BusinessException(ErrorType.ACCOUNT_NOT_FOUND);
         }
 
         entity.setName(account.getName());

@@ -3,8 +3,8 @@ package br.com.siqueira.account.domain.model;
 import java.time.LocalDateTime;
 
 import br.com.siqueira.account.domain.enums.AccountType;
-import br.com.siqueira.account.domain.exception.AccountAlreadyActiveException;
-import br.com.siqueira.account.domain.exception.AccountAlreadyInactiveException;
+import br.com.siqueira.shared.api.error.BusinessException;
+import br.com.siqueira.shared.api.error.ErrorType;
 import lombok.Getter;
 
 @Getter
@@ -66,14 +66,14 @@ public class Account {
 
     public void deactivate() {
         if (!this.active) {
-            throw new AccountAlreadyInactiveException();
+            throw new BusinessException(ErrorType.ACCOUNT_ALREADY_INACTIVE);
         }
         this.active = false;
     }
 
     public void activate() {
         if (this.active) {
-            throw new AccountAlreadyActiveException();
+            throw new BusinessException(ErrorType.ACCOUNT_ALREADY_ACTIVE);
         }
         this.active = true;
     }
