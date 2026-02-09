@@ -15,13 +15,4 @@ public enum AccountType {
         this.type = type;
         this.displayName = displayName;
     }
-
-    public static AccountType fromString(String type) {
-        for (AccountType accountType : AccountType.values()) {
-            if (accountType.type.equalsIgnoreCase(type)) {
-                return accountType;
-            }
-        }
-        throw new IllegalArgumentException("Unknown account type: " + type);
-    }
 }
