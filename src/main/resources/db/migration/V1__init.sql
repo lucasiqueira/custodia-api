@@ -21,6 +21,7 @@ CREATE TABLE accounts (
 CREATE TABLE categories (
   id BIGINT PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
+  type VARCHAR(20) NOT NULL,
   description VARCHAR(255),
   active BOOLEAN NOT NULL DEFAULT TRUE,
   created_at TIMESTAMP NOT NULL,
