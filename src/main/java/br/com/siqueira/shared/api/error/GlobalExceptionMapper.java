@@ -20,10 +20,10 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
     @Override
     public Response toResponse(Throwable exception) {
 
-        ErrorType errorType;
+        ApiErrorCode errorType;
         String message;
 
-        if (exception instanceof BusinessException be) {
+        if (exception instanceof ApiException be) {
             errorType = be.getErrorType();
             message = be.getMessage();
         }
@@ -31,11 +31,11 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
                 || exception instanceof JsonbException
                 || exception instanceof IllegalArgumentException) {
 
-            errorType = ErrorType.VALIDATION_ERROR;
+            errorType = ApiErrorCode.VALIDATION_ERROR;
             message = exception.getMessage();
         }
         else {
-            errorType = ErrorType.INTERNAL_ERROR;
+            errorType = ApiErrorCode.INTERNAL_ERROR;
             message = "Unexpected error";
         }
 

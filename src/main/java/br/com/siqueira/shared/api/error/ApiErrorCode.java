@@ -1,6 +1,6 @@
 package br.com.siqueira.shared.api.error;
 
-public enum ErrorType {
+public enum ApiErrorCode {
     ACCOUNT_NOT_FOUND(404, "ACCOUNT_NOT_FOUND", "Account not found"),
     ACCOUNT_ALREADY_EXISTS(409, "ACCOUNT_ALREADY_EXISTS", "Account already exists"),
     ACCOUNT_ALREADY_ACTIVE(409, "ACCOUNT_ALREADY_ACTIVE", "Account is already active"),
@@ -12,7 +12,7 @@ public enum ErrorType {
     private final String code;
     private final String defaultMessage;
 
-    ErrorType(int status, String code, String defaultMessage) {
+    ApiErrorCode(int status, String code, String defaultMessage) {
         this.status = status;
         this.code = code;
         this.defaultMessage = defaultMessage;
