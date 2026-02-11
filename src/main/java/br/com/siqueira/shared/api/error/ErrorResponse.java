@@ -19,7 +19,7 @@ public record ErrorResponse(
     @Schema(description = "Error message", examples = "Entity is unprocessable. Check the documentation for details.")
     String message,
     
-    @Schema(description = "Origin of the error (class.method:line)")
+    @Schema(description = "Origin of the error (class.method:line)", examples = "account.application.service.AccountService.createAccount:45")
     String origin,
     
     @Schema(description = "Request path", examples = "/v1/accounts/123")

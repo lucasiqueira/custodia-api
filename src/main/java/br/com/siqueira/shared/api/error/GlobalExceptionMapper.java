@@ -23,38 +23,23 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
     @Override
     public Response toResponse(Throwable exception) {
 
-        ApiErrorCode errorType;
-        String message;
-
-        if (exception instanceof ApiException be) {
-            errorType = be.getErrorType();
-            message = be.getMessage();
-        } else if (exception instanceof ConstraintViolationException
-                || exception instanceof JsonbException
-                || exception instanceof IllegalArgumentException) {
-
-            errorType = ApiErrorCode.VALIDATION_ERROR;
-            message = exception.getMessage();
-        } else {
-            errorType = ApiErrorCode.INTERNAL_ERROR;
-            message = "Unexpected error";
-        }
-
-        String origin = resolveOrigin(exception);
         String traceId = UUID.randomUUID().toString();
+        ApiErrorCode errorCode = resolveErrorCode(exception);
+        String message = resolveMessage(exception, errorCode, traceId);
+        String origin = resolveOrigin(exception);
 
         ErrorResponse response = new ErrorResponse(
                 LocalDateTime.now(),
-                errorType.status(),
-                errorType.code(),
+                errorCode.status().getStatusCode(),
+                errorCode.code(),
                 message,
+                origin,
                 requestContext.getUriInfo().getPath(),
-                traceId,
-                origin);
+                traceId);
 
         logError(traceId, exception);
 
-        return Response.status(errorType.status())
+        return Response.status(errorCode.status())
                 .entity(response)
                 .build();
     }
@@ -81,4 +66,41 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
         exception.printStackTrace();
     }
 
+    private ApiErrorCode resolveErrorCode(Throwable ex) {
+
+        if (ex instanceof ApiException apiException) {
+            return apiException.getErrorCode();
+        }
+
+        if (ex instanceof ConstraintViolationException) {
+            return ApiErrorCode.VALIDATION_ERROR;
+        }
+
+        if (ex instanceof JsonbException) {
+            return ApiErrorCode.VALIDATION_ERROR;
+        }
+
+        if (ex instanceof IllegalArgumentException) {
+            return ApiErrorCode.VALIDATION_ERROR;
+        }
+
+        return ApiErrorCode.INTERNAL_ERROR;
+    }
+
+    private String resolveMessage(Throwable ex, ApiErrorCode code, String traceId) {
+
+        if (ex instanceof ApiException) {
+            return ex.getMessage();
+        }
+
+        if (code == ApiErrorCode.VALIDATION_ERROR) {
+            return ex.getMessage();
+        }
+
+        if (code == ApiErrorCode.INTERNAL_ERROR) {
+            return "Unexpected error. TraceId=" + traceId;
+        }
+
+        return ex.getMessage();
+    }
 }

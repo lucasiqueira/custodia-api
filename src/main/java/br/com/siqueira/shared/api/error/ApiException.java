@@ -2,20 +2,20 @@ package br.com.siqueira.shared.api.error;
 
 public class ApiException extends RuntimeException {
 
-    private final ApiErrorCode errorType;
+    private final ApiErrorCode errorCode;
 
-    public ApiException(ApiErrorCode errorType) {
-        super(errorType.defaultMessage());
-        this.errorType = errorType;
+    public ApiException(ApiErrorCode errorCode) {
+        super(errorCode.defaultMessage());
+        this.errorCode = errorCode;
     }
 
-    public ApiException(ApiErrorCode errorType, String message) {
+    public ApiException(ApiErrorCode errorCode, String message) {
         super(message);
-        this.errorType = errorType;
+        this.errorCode = errorCode;
     }
 
-    public ApiErrorCode getErrorType() {
-        return errorType;
+    public ApiErrorCode getErrorCode() {
+        return errorCode;
     }
 }
 
