@@ -1,4 +1,4 @@
-package br.com.siqueira.category.interfaceadapter.controller.category;
+package br.com.siqueira.category.interfaceadapter.controller;
 
 import java.net.URI;
 import java.util.List;

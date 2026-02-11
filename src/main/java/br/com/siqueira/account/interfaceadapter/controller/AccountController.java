@@ -1,4 +1,4 @@
-package br.com.siqueira.account.interfaceadapter.controller.account;
+package br.com.siqueira.account.interfaceadapter.controller;
 
 import java.net.URI;
 import java.util.List;
