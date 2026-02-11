@@ -3,6 +3,7 @@ package br.com.siqueira.category.domain.model;
 import java.time.LocalDateTime;
 
 import br.com.siqueira.category.domain.enums.CategoryType;
+import br.com.siqueira.shared.utils.Parameters;
 import lombok.Getter;
 
 @Getter
@@ -33,9 +34,7 @@ public class Category {
     }
 
     public static Category createNew (String name, CategoryType type, String description) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Category name is required");
-        }
+        Parameters.requireNonBlank(name, "name");
 
         return new Category (
             null,
@@ -55,13 +54,8 @@ public class Category {
             boolean active,
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
-        if (id == null) {
-            throw new IllegalArgumentException("Category id is required for rehydration");
-        }
-
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Category name is required for rehydration");
-        }
+        Parameters.requireNonNull(id, "id");
+        Parameters.requireNonBlank(name, "name");
 
         return new Category (
                 id,

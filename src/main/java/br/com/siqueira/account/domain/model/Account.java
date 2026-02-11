@@ -3,8 +3,9 @@ package br.com.siqueira.account.domain.model;
 import java.time.LocalDateTime;
 
 import br.com.siqueira.account.domain.enums.AccountType;
-import br.com.siqueira.shared.api.error.ApiException;
 import br.com.siqueira.shared.api.error.ApiErrorCode;
+import br.com.siqueira.shared.api.error.ApiException;
+import br.com.siqueira.shared.utils.Parameters;
 import lombok.Getter;
 
 @Getter
@@ -32,9 +33,7 @@ public class Account {
     }
 
     public static Account createNew(String name, AccountType type) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Account name is required");
-        }
+        Parameters.requireNonBlank(name, "name");
 
         return new Account(
                 null,
@@ -57,9 +56,7 @@ public class Account {
     }
 
     public void update(String name, AccountType type) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Account name is required");
-        }
+        Parameters.requireNonBlank(name, "name");
         this.name = name;
         this.type = type;
     }
