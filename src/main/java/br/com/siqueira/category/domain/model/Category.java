@@ -25,7 +25,7 @@ public class Category {
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         this.id = id;
-        this.name = name;
+        this.name = name.trim();
         this.type = type;
         this.description = description;
         this.active = active;
@@ -38,7 +38,7 @@ public class Category {
 
         return new Category (
             null,
-            name,
+            name.trim(),
             type,
             description,
             true,
@@ -59,7 +59,7 @@ public class Category {
 
         return new Category (
                 id,
-                name,
+                name.trim(),
                 type,
                 description,
                 active,
@@ -69,7 +69,7 @@ public class Category {
 
     public void update(String name, CategoryType type, String description) {
         Parameters.requireNonBlank(name, "name");
-        this.name = name;
+        this.name = name.trim();
         this.type = type;
         this.description = description;
     }

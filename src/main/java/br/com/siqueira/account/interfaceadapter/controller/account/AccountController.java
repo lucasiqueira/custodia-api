@@ -21,6 +21,7 @@ import br.com.siqueira.shared.api.error.ErrorResponse;
 import br.com.siqueira.shared.api.openapi.responses.BadRequestResponse;
 import br.com.siqueira.shared.api.openapi.responses.ConflictResponse;
 import br.com.siqueira.shared.api.openapi.responses.NotFoundResponse;
+import br.com.siqueira.shared.api.openapi.responses.StandardErrorResponses;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -81,8 +82,7 @@ public class AccountController {
     @PUT
     @Path("{id}")
     @APIResponse(responseCode = "200", description = "Account updated", content = @Content(schema = @Schema(implementation = AccountResponse.class)))
-    @BadRequestResponse
-    @NotFoundResponse
+    @StandardErrorResponses
     public RestResponse<AccountResponse> updateAccount(
             @PathParam("id") Long id,
             @Valid UpdateAccountRequest request) {

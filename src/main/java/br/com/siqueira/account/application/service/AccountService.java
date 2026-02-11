@@ -28,16 +28,14 @@ public class AccountService {
 
     @Transactional
     public Account createAccount(Account account) {
-        if (accountRepository.existsByNameAndType(account.getName(), account.getType())) {
-            String message = "Account with name '" + account.getName() + "' and type '" + account.getType().getType() + "' already exists";
-            throw new ApiException(ApiErrorCode.ACCOUNT_ALREADY_EXISTS, message);
-        }
+        validateUniqueNameAndType(account.getName(), account.getType());
 
         return accountRepository.save(account);
     }
 
     @Transactional
     public Account updateAccount(Long id, String name, AccountType type) {
+        validateUniqueNameAndType(name, type);
         Account account = this.load(id);
         account.update(name, type);
         return accountRepository.save(account);
@@ -59,6 +57,13 @@ public class AccountService {
 
     private Account load(Long id) {
         return accountRepository.getAccountById(id);
+    }
+
+    private void validateUniqueNameAndType(String name, AccountType type) {
+        if (accountRepository.existsByNameAndType(name, type)) {
+            String message = "Account with name '" + name + "' and type '" + type.getType() + "' already exists";
+            throw new ApiException(ApiErrorCode.ACCOUNT_ALREADY_EXISTS, message);
+        }
     }
 
 }

@@ -50,7 +50,12 @@ public class CategoryRepository implements PanacheRepositoryBase<CategoryEntity,
     }
 
     public boolean existsByNameAndType(String name, CategoryType type) {
-        return find("name = ?1 and type = ?2", name, type.name()).firstResultOptional().isPresent();
+        return find(
+                "lower(trim(name)) = ?1 and type = ?2",
+                name.trim().toLowerCase(),
+                type.name())
+                .firstResultOptional()
+                .isPresent();
     }
-    
+
 }

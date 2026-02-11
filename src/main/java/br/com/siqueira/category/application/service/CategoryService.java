@@ -25,17 +25,14 @@ public class CategoryService {
 
     @Transactional
     public Category createCategory(Category category) {
-
-        if (categoryRepository.existsByNameAndType(category.getName(), category.getType())) {
-            String message = "Category with name '" + category.getName() + "' and type '" + category.getType().name() + "' already exists";
-            throw new ApiException(ApiErrorCode.CATEGORY_ALREADY_EXISTS, message);
-        }
+        validateUniqueNameAndType(category.getName(), category.getType());
 
         return categoryRepository.save(category);
     }
 
     @Transactional
     public Category updateCategory(Long id, String name, CategoryType type, String description) {
+        validateUniqueNameAndType(name, type);
         Category category = this.load(id);
         category.update(name, type, description);
         return categoryRepository.save(category);
@@ -43,6 +40,13 @@ public class CategoryService {
 
     private Category load(Long id) {
         return categoryRepository.getCategoryById(id);
+    }
+
+    private void validateUniqueNameAndType(String name, CategoryType type) {
+        if (categoryRepository.existsByNameAndType(name, type)) {
+            String message = "Category with name '" + name + "' and type '" + type.name() + "' already exists";
+            throw new ApiException(ApiErrorCode.CATEGORY_ALREADY_EXISTS, message);
+        }
     }
     
 }

@@ -25,7 +25,7 @@ public class Account {
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         this.id = id;
-        this.name = name;
+        this.name = name.trim();
         this.type = type;
         this.active = active;
         this.createdAt = createdAt;
@@ -37,7 +37,7 @@ public class Account {
 
         return new Account(
                 null,
-                name,
+                name.trim(),
                 type,
                 true,
                 null,
@@ -52,12 +52,12 @@ public class Account {
             LocalDateTime createdAt,
             LocalDateTime updatedAt) {
         return new Account(
-                id, name, type, active, createdAt, updatedAt);
+                id, name.trim(), type, active, createdAt, updatedAt);
     }
 
     public void update(String name, AccountType type) {
         Parameters.requireNonBlank(name, "name");
-        this.name = name;
+        this.name = name.trim();
         this.type = type;
     }
 
