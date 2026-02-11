@@ -6,7 +6,8 @@ public enum ApiErrorCode {
     ACCOUNT_ALREADY_ACTIVE(409, "ACCOUNT_ALREADY_ACTIVE", "Account is already active"),
     ACCOUNT_ALREADY_INACTIVE(409, "ACCOUNT_ALREADY_INACTIVE", "Account is already inactive"),
     VALIDATION_ERROR(400, "VALIDATION_ERROR", "Validation error"),
-    INTERNAL_ERROR(500, "INTERNAL_ERROR", "Internal server error");
+    INTERNAL_ERROR(500, "INTERNAL_ERROR", "Internal server error"),
+    CATEGORY_ALREADY_EXISTS(409, "CATEGORY_ALREADY_EXISTS", "Category already exists");
 
     private final int status;
     private final String code;

@@ -48,7 +48,6 @@ public class AccountController {
 
     @GET
     @APIResponse(responseCode = "200", description = "List of accounts", content = @Content(mediaType = MediaType.APPLICATION_JSON, schema = @Schema(type = SchemaType.ARRAY, implementation = AccountResponse.class)))
-
     public RestResponse<List<AccountResponse>> getAllAccounts() {
         return RestResponse.ok(AccountResponseMapper.from(accountService.getAllAccounts()));
     }
