@@ -2,6 +2,7 @@ package br.com.siqueira.category.application.service;
 
 import java.util.List;
 
+import br.com.siqueira.category.domain.enums.CategoryType;
 import br.com.siqueira.category.domain.model.Category;
 import br.com.siqueira.category.infrastructure.persistence.repository.CategoryRepository;
 import br.com.siqueira.shared.api.error.ApiErrorCode;
@@ -31,6 +32,17 @@ public class CategoryService {
         }
 
         return categoryRepository.save(category);
+    }
+
+    @Transactional
+    public Category updateCategory(Long id, String name, CategoryType type, String description) {
+        Category category = this.load(id);
+        category.update(name, type, description);
+        return categoryRepository.save(category);
+    }
+
+    private Category load(Long id) {
+        return categoryRepository.getCategoryById(id);
     }
     
 }

@@ -66,4 +66,11 @@ public class Category {
                 createdAt,
                 updatedAt);
     }
+
+    public void update(String name, CategoryType type, String description) {
+        Parameters.requireNonBlank(name, "name");
+        this.name = name;
+        this.type = type;
+        this.description = description;
+    }
 }
